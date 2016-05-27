@@ -3,9 +3,11 @@ package com.wuyin.supermarket.fragment;
 
 import android.support.v4.app.Fragment;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.wuyin.supermarket.R;
@@ -33,7 +35,6 @@ public class SubjectFragment extends BaseFragment {
 
         SubjectHttpRequest httpRequest = new SubjectHttpRequest();
         subjectInfos = httpRequest.load(0);
-
         return checkLoad(subjectInfos);
     }
 
@@ -42,6 +43,12 @@ public class SubjectFragment extends BaseFragment {
 
         ListView listView = new ListView(UIUtils.getContext());
         listView.setAdapter(new MyAdapter(subjectInfos,listView));
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(UIUtils.getContext(), "我是第"+position+"项"+subjectInfos.get(position).getDes(), Toast.LENGTH_SHORT).show();
+            }
+        });
 
         return listView;
     }

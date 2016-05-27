@@ -16,6 +16,7 @@ public class MoreHolder extends BaseHolder<Integer> {
     public static final int HAS_NO_MORE = 0;     //没有额外的数据
     public static final int LOAD_ERROR = 1;   //加载失败
     public static final int HAS_MORE = 2;   //有额外的数据
+    public boolean hasMore;
 
     private RelativeLayout rl_more_loading,rl_more_error;
 
@@ -34,9 +35,14 @@ public class MoreHolder extends BaseHolder<Integer> {
 
     private DefaultAdapter adapter;
 
-    public MoreHolder(DefaultAdapter adapter) {
+    public MoreHolder(DefaultAdapter adapter,boolean hasMore) {
         super();
         this.adapter = adapter;
+        this.hasMore = hasMore;
+        if (!hasMore){
+            setData(0);
+        }
+
     }
 
     /**
@@ -50,6 +56,7 @@ public class MoreHolder extends BaseHolder<Integer> {
         } else {
             rk_more_error.setVisibility(View.GONE);
         }*/
+
         rl_more_error.setVisibility(data==LOAD_ERROR?View.VISIBLE:View.GONE);
         rl_more_loading.setVisibility(data==HAS_MORE?View.VISIBLE:View.GONE);
     }
@@ -57,7 +64,9 @@ public class MoreHolder extends BaseHolder<Integer> {
     @Override
     public View getContentView() {
 
-        loadMore();
+        if (hasMore) {
+            loadMore();
+        }
 
         return super.getContentView();
     }

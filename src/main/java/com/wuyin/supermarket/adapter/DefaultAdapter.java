@@ -66,7 +66,7 @@ public abstract class DefaultAdapter<T> extends BaseAdapter implements AdapterVi
      * @param position
      * @return
      */
-    private int getInnerItemType(int position) {
+    protected int getInnerItemType(int position) {
 
         return DEFAULT_ITEM;
     }
@@ -114,7 +114,7 @@ public abstract class DefaultAdapter<T> extends BaseAdapter implements AdapterVi
                     holder = (BaseHolder) convertView.getTag();
                 }
                 break;
-            case DEFAULT_ITEM:
+            default:
                 if (convertView == null) {
                     holder = getHolder();
                 } else {
@@ -134,9 +134,17 @@ public abstract class DefaultAdapter<T> extends BaseAdapter implements AdapterVi
         if (moreHolder != null) {
             return moreHolder;
         } else {
-            moreHolder = new MoreHolder(this);
+            moreHolder = new MoreHolder(this,hasMore());
         }
         return moreHolder;
+    }
+
+    /**
+     * 是否有额外的数据
+     * @return
+     */
+    protected boolean hasMore() {
+        return true;
     }
 
     public abstract BaseHolder<T> getHolder();
@@ -184,13 +192,14 @@ public abstract class DefaultAdapter<T> extends BaseAdapter implements AdapterVi
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-       // Toast.makeText(UIUtils.getContext(), "position" + position, Toast.LENGTH_SHORT).show();
+        // Toast.makeText(UIUtils.getContext(), "position" + position, Toast.LENGTH_SHORT).show();
         position = position - lv.getHeaderViewsCount();  //获取到顶部条目的数量，修正position
         onInnerItemClick(position);
     }
 
     /**
      * 处理条目的点击事件
+     *
      * @param position
      */
     public void onInnerItemClick(int position) {
